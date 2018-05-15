@@ -87,9 +87,9 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       int page = (position.pixels / (position.maxScrollExtent/(todos.length.toDouble()-1))).toInt();
       double pageDo = (position.pixels / (position.maxScrollExtent/(todos.length.toDouble()-1)));
       double percent = pageDo - page;
-      print("int page: " + page.toString());
-      print("double page: " + pageDo.toString());
-      print("percent " + percent.toString());
+//      print("int page: " + page.toString());
+//      print("double page: " + pageDo.toString());
+//      print("percent " + percent.toString());
       if (direction == ScrollDirection.reverse) {
         //page begin 
         if (todos.length-1 < page+1) {
