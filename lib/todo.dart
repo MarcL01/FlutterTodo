@@ -5,19 +5,19 @@ import 'dart:math';
 import 'dart:collection';
 
 class TodoObject {
-
   TodoObject(String title, IconData icon) {
     this.title = title;
     this.icon = icon;
     this.color = ColorChoies.colors[new Random().nextInt(ColorChoies.colors.length)];
+    this.gradient = LinearGradient(colors: ColorChoies.gradients[new Random().nextInt(ColorChoies.gradients.length)], begin: Alignment.bottomCenter, end: Alignment.topCenter);
     tasks = new Map<DateTime, List<TaskObject>>();
     this.uuid = new Uuid().v1();
   }
 
-  TodoObject.import(String uuidS, String title, int sortID, Color color, IconData icon, Map<DateTime, List<TaskObject>> tasks) {
+  TodoObject.import(String uuidS, String title, int sortID, List<Color> color, IconData icon, Map<DateTime, List<TaskObject>> tasks) {
     this.sortID = sortID;
     this.title = title;
-    this.color = color;
+    this.gradient = LinearGradient(colors: color, begin: Alignment.bottomCenter, end: Alignment.topCenter);
     this.icon = icon;
     this.tasks = tasks;
     this.uuid = uuidS;
@@ -27,6 +27,7 @@ class TodoObject {
   int sortID;
   String title;
   Color color;
+  LinearGradient gradient;
   IconData icon;
   Map<DateTime, List<TaskObject>> tasks;
 
@@ -40,7 +41,7 @@ class TodoObject {
 
   //List<TaskObject> tasks;
 
-  double percentComplete() {    
+  double percentComplete() {
     if (tasks.isEmpty) {
       return 1.0;
     }
@@ -54,11 +55,8 @@ class TodoObject {
         }
       });
     });
-    return completed/amount;
+    return completed / amount;
   }
-
-
-
 }
 
 class TaskObject {
@@ -76,7 +74,6 @@ class TaskObject {
     this.task = task;
     this.date = date;
     this._completed = completed;
-    
   }
 
   void setComplete(bool value) {
@@ -84,5 +81,4 @@ class TaskObject {
   }
 
   isCompleted() => _completed;
-
 }
