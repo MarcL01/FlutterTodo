@@ -255,12 +255,34 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                               child: Material(
                                                                 color: Colors.transparent,
                                                                 type: MaterialType.transparency,
-                                                                child: IconButton(
+                                                                child: PopupMenuButton(
                                                                   icon: Icon(
                                                                     Icons.more_vert,
                                                                     color: Colors.grey,
                                                                   ),
-                                                                  onPressed: () {},
+                                                                  itemBuilder: (context) => <PopupMenuEntry<TodoCardSettings>>[
+                                                                        PopupMenuItem(
+                                                                          child: Text("Edit Color"),
+                                                                          value: TodoCardSettings.edit_color,
+                                                                        ),
+                                                                        PopupMenuItem(
+                                                                          child: Text("Delete"),
+                                                                          value: TodoCardSettings.delete,
+                                                                        ),
+                                                                      ],
+                                                                  onSelected: (setting) {
+                                                                    switch (setting) {
+                                                                      case TodoCardSettings.edit_color:
+                                                                        print("edit color clicked");
+                                                                        break;
+                                                                      case TodoCardSettings.delete:
+                                                                        print("delete clicked");
+                                                                        setState(() {
+                                                                          todos.remove(todoObject);
+                                                                        });
+                                                                        break;
+                                                                    }
+                                                                  },
                                                                 ),
                                                               ),
                                                             )),
@@ -356,6 +378,8 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   }
 }
 
+enum TodoCardSettings { edit_color, delete }
+
 class DetailPage extends StatefulWidget {
   DetailPage({@required this.todoObject, Key key}) : super(key: key);
 
@@ -384,7 +408,6 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
           barPercent = animT.lerp(animationBar.value);
         });
       });
-    ;
     animT = Tween<double>(begin: percentComplete, end: percentComplete);
     scaleAnimation.forward();
     super.initState();
@@ -435,12 +458,31 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                 child: Material(
                   color: Colors.transparent,
                   type: MaterialType.transparency,
-                  child: IconButton(
+                  child: PopupMenuButton(
                     icon: Icon(
                       Icons.more_vert,
                       color: Colors.grey,
                     ),
-                    onPressed: () {},
+                    itemBuilder: (context) => <PopupMenuEntry<TodoCardSettings>>[
+                          PopupMenuItem(
+                            child: Text("Edit Color"),
+                            value: TodoCardSettings.edit_color,
+                          ),
+                          PopupMenuItem(
+                            child: Text("Delete"),
+                            value: TodoCardSettings.delete,
+                          ),
+                        ],
+                    onSelected: (setting) {
+                      switch (setting) {
+                        case TodoCardSettings.edit_color:
+                          print("edit color clicked");
+                          break;
+                        case TodoCardSettings.delete:
+                          print("delete clicked");
+                          break;
+                      }
+                    },
                   ),
                 ),
               )
@@ -585,21 +627,19 @@ class CustomScrollPhysics extends ScrollPhysics {
     ScrollPhysics parent,
   }) : super(parent: parent);
 
-  final double numOfItems = todos.length.toDouble() - 1;
-
   @override
   CustomScrollPhysics applyTo(ScrollPhysics ancestor) {
     return CustomScrollPhysics(parent: buildParent(ancestor));
   }
 
   double _getPage(ScrollPosition position) {
-    return position.pixels / (position.maxScrollExtent / numOfItems);
+    return position.pixels / (position.maxScrollExtent / (todos.length.toDouble() - 1));
     // return position.pixels / position.viewportDimension;
   }
 
   double _getPixels(ScrollPosition position, double page) {
     // return page * position.viewportDimension;
-    return page * (position.maxScrollExtent / numOfItems);
+    return page * (position.maxScrollExtent / (todos.length.toDouble() - 1));
   }
 
   double _getTargetPixels(ScrollPosition position, Tolerance tolerance, double velocity) {
