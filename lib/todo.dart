@@ -8,16 +8,18 @@ class TodoObject {
   TodoObject(String title, IconData icon) {
     this.title = title;
     this.icon = icon;
-    this.color = ColorChoies.colors[new Random().nextInt(ColorChoies.colors.length)];
-    this.gradient = LinearGradient(colors: ColorChoies.gradients[new Random().nextInt(ColorChoies.gradients.length)], begin: Alignment.bottomCenter, end: Alignment.topCenter);
+    ColorChoice choice = ColorChoices.choices[new Random().nextInt(ColorChoices.choices.length)];
+    this.color = choice.primary;
+    this.gradient = LinearGradient(colors: choice.gradient, begin: Alignment.bottomCenter, end: Alignment.topCenter);
     tasks = new Map<DateTime, List<TaskObject>>();
     this.uuid = new Uuid().v1();
   }
 
-  TodoObject.import(String uuidS, String title, int sortID, List<Color> color, IconData icon, Map<DateTime, List<TaskObject>> tasks) {
+  TodoObject.import(String uuidS, String title, int sortID, ColorChoice color, IconData icon, Map<DateTime, List<TaskObject>> tasks) {
     this.sortID = sortID;
     this.title = title;
-    this.gradient = LinearGradient(colors: color, begin: Alignment.bottomCenter, end: Alignment.topCenter);
+    this.color = color.primary;
+    this.gradient = LinearGradient(colors: color.gradient, begin: Alignment.bottomCenter, end: Alignment.topCenter);
     this.icon = icon;
     this.tasks = tasks;
     this.uuid = uuidS;

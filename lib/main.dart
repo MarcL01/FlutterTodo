@@ -24,21 +24,24 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class ColorChoies {
-  static const List<Color> colors = [
-    const Color(0xFF5A89E6),
-    const Color(0xFFF77B67),
-    const Color(0xFF4EC5AC),
-  ];
-  static const List<List<Color>> gradients = [
-    [const Color.fromRGBO(245, 68, 113, 1.0), const Color.fromRGBO(245, 161, 81, 1.0)],
-    [const Color.fromRGBO(77, 85, 225, 1.0), const Color.fromRGBO(93, 167, 231, 1.0)],
+class ColorChoice {
+  const ColorChoice({@required this.primary, @required this.gradient});
+
+  final Color primary;
+  final List<Color> gradient;
+}
+
+class ColorChoices {
+  static const List<ColorChoice> choices = [
+    ColorChoice(primary: Color(0xFFF77B67), gradient: [const Color.fromRGBO(245, 68, 113, 1.0), const Color.fromRGBO(245, 161, 81, 1.0)]),
+    ColorChoice(primary: Color(0xFF5A89E6), gradient: [const Color.fromRGBO(77, 85, 225, 1.0), const Color.fromRGBO(93, 167, 231, 1.0)]),
+    ColorChoice(primary: Color(0xFF4EC5AC), gradient: [const Color.fromRGBO(61, 188, 156, 1.0), const Color.fromRGBO(61, 212, 132, 1.0)])
   ];
 }
 
 List<TodoObject> todos = [
   // TodoObject.import("SOME_RANDOM_UUID", "Custom", 1, ColorChoies.colors[0], Icons.alarm, [TaskObject("Task", DateTime.now()),TaskObject("Task2", DateTime.now()),TaskObject.import("Task3", DateTime.now(), true)]),
-  TodoObject.import("SOME_RANDOM_UUID", "Custom", 1, ColorChoies.gradients[0], Icons.alarm, {
+  TodoObject.import("SOME_RANDOM_UUID", "Custom", 1, ColorChoices.choices[0], Icons.alarm, {
     DateTime(2018, 5, 3): [
       TaskObject("Meet Clients", DateTime(2018, 5, 3)),
       TaskObject("Design Sprint", DateTime(2018, 5, 3)),
@@ -77,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    colorTween = ColorTween(begin: ColorChoies.colors[0], end: ColorChoies.colors[1]);
+    colorTween = ColorTween(begin: todos[0].color, end: todos[0].color);
     backgroundColor = todos[0].color;
     backgroundGradient = todos[0].gradient;
     scrollController = ScrollController();
@@ -87,44 +90,22 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       int page = (position.pixels / (position.maxScrollExtent / (todos.length.toDouble() - 1))).toInt();
       double pageDo = (position.pixels / (position.maxScrollExtent / (todos.length.toDouble() - 1)));
       double percent = pageDo - page;
-//      print("int page: " + page.toString());
-//      print("double page: " + pageDo.toString());
-//      print("percent " + percent.toString());
-      if (direction == ScrollDirection.reverse) {
-        //page begin
-        if (todos.length - 1 < page + 1) {
-          return;
-        }
-        colorTween.begin = todos[page].color;
-        colorTween.end = todos[page + 1].color;
-        setState(() {
-          backgroundColor = colorTween.lerp(percent);
-          backgroundGradient = todos[page].gradient.lerpTo(todos[page + 1].gradient, percent);
-        });
-      } else if (direction == ScrollDirection.forward) {
-        //+1 begin page end
-        if (todos.length - 1 < page + 1) {
-          return;
-        }
-        colorTween.begin = todos[page].color;
-        colorTween.end = todos[page + 1].color;
-        setState(() {
-          backgroundColor = colorTween.lerp(percent);
-          backgroundGradient = todos[page].gradient.lerpTo(todos[page + 1].gradient, percent);
-        });
-      } else {
+      if (todos.length - 1 < page + 1) {
         return;
       }
+      colorTween.begin = todos[page].color;
+      colorTween.end = todos[page + 1].color;
+      setState(() {
+        backgroundColor = colorTween.lerp(percent);
+        backgroundGradient = todos[page].gradient.lerpTo(todos[page + 1].gradient, percent);
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
-    final double _ratioW = _width / 375.0;
-
     final double _height = MediaQuery.of(context).size.height;
-    final double _ratioH = _height / 812.0;
 
     return Container(
       decoration: BoxDecoration(gradient: backgroundGradient),
