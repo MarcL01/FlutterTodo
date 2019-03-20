@@ -4,10 +4,8 @@ import 'package:flutter/services.dart';
 
 const double _kLeadingWidth = kToolbarHeight;
 const Object _kDefaultHeroTag = const Object();
-const Object _kUnspecifiedArgument = const Object();
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
-
   CustomAppBar({
     Key key,
     this.leading,
@@ -27,14 +25,14 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.toolbarOpacity: 1.0,
     this.bottomOpacity: 1.0,
     this.heroTag: _kDefaultHeroTag,
-  }) : assert(automaticallyImplyLeading != null),
-       assert(elevation != null),
-       assert(primary != null),
-       assert(titleSpacing != null),
-       assert(toolbarOpacity != null),
-       assert(bottomOpacity != null),
-       preferredSize = new Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0)),
-       super(key: key);
+  })  : assert(automaticallyImplyLeading != null),
+        assert(elevation != null),
+        assert(primary != null),
+        assert(titleSpacing != null),
+        assert(toolbarOpacity != null),
+        assert(bottomOpacity != null),
+        preferredSize = new Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0)),
+        super(key: key);
 
   final Object heroTag;
 
@@ -74,8 +72,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Size preferredSize;
 
   bool _getEffectiveCenterTitle(ThemeData themeData) {
-    if (centerTitle != null)
-      return centerTitle;
+    if (centerTitle != null) return centerTitle;
     assert(themeData.platform != null);
     switch (themeData.platform) {
       case TargetPlatform.android:
@@ -117,19 +114,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
     TextStyle sideStyle = widget.textTheme?.body1 ?? themeData.primaryTextTheme.body1;
 
     final Brightness brightness = widget.brightness ?? themeData.primaryColorBrightness;
-    SystemChrome.setSystemUIOverlayStyle(brightness == Brightness.dark
-      ? SystemUiOverlayStyle.light
-      : SystemUiOverlayStyle.dark);
+    SystemChrome.setSystemUIOverlayStyle(brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
 
     if (widget.toolbarOpacity != 1.0) {
       final double opacity = const Interval(0.25, 1.0, curve: Curves.fastOutSlowIn).transform(widget.toolbarOpacity);
-      if (centerStyle?.color != null)
-        centerStyle = centerStyle.copyWith(color: centerStyle.color.withOpacity(opacity));
-      if (sideStyle?.color != null)
-        sideStyle = sideStyle.copyWith(color: sideStyle.color.withOpacity(opacity));
-      appBarIconTheme = appBarIconTheme.copyWith(
-        opacity: opacity * (appBarIconTheme.opacity ?? 1.0)
-      );
+      if (centerStyle?.color != null) centerStyle = centerStyle.copyWith(color: centerStyle.color.withOpacity(opacity));
+      if (sideStyle?.color != null) sideStyle = sideStyle.copyWith(color: sideStyle.color.withOpacity(opacity));
+      appBarIconTheme = appBarIconTheme.copyWith(opacity: opacity * (appBarIconTheme.opacity ?? 1.0));
     }
 
     Widget leading = widget.leading;
@@ -141,8 +132,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
         );
       } else {
-        if (canPop)
-          leading = useCloseButton ? const CloseButton() : const BackButton();
+        if (canPop) leading = useCloseButton ? const CloseButton() : const BackButton();
       }
     }
     if (leading != null) {
@@ -157,8 +147,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
       switch (defaultTargetPlatform) {
         case TargetPlatform.android:
         case TargetPlatform.fuchsia:
-           title = new Semantics(namesRoute: true, child: title);
-           break;
+          title = new Semantics(namesRoute: true, child: title);
+          break;
         case TargetPlatform.iOS:
           break;
       }
@@ -220,10 +210,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
               child: appBar,
             ),
           ),
-          widget.bottomOpacity == 1.0 ? widget.bottom : new Opacity(
-            opacity: const Interval(0.25, 1.0, curve: Curves.fastOutSlowIn).transform(widget.bottomOpacity),
-            child: widget.bottom,
-          ),
+          widget.bottomOpacity == 1.0
+              ? widget.bottom
+              : new Opacity(
+                  opacity: const Interval(0.25, 1.0, curve: Curves.fastOutSlowIn).transform(widget.bottomOpacity),
+                  child: widget.bottom,
+                ),
         ],
       );
     }
