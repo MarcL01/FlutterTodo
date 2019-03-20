@@ -341,7 +341,20 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                               )
                                                             ],
                                                           ),
-                                                        )))
+                                                        ))),
+                                                Hero(
+                                                  tag: todoObject.uuid + "_just_a_test",
+                                                  child: Material(
+                                                    type: MaterialType.transparency,
+                                                    child: FadeTransition(
+                                                      opacity: AlwaysStoppedAnimation(0.0),
+                                                      child: ScaleTransition(
+                                                        scale: AlwaysStoppedAnimation(0.0),
+                                                        child: Container(),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                )
                                               ],
                                             ),
                                           ),
@@ -517,102 +530,118 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                   ),
                 ),
                 Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Hero(
-                          tag: widget.todoObject.uuid + "_number_of_tasks",
-                          child: Material(
-                              color: Colors.transparent,
-                              child: Text(
-                                widget.todoObject.taskAmount().toString() + " Tasks",
-                                style: TextStyle(),
-                                softWrap: false,
-                              )),
-                        ))),
+                  padding: const EdgeInsets.only(bottom: 12.0),
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Hero(
+                      tag: widget.todoObject.uuid + "_number_of_tasks",
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          widget.todoObject.taskAmount().toString() + " Tasks",
+                          style: TextStyle(),
+                          softWrap: false,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 20.0),
                   child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Hero(
-                        tag: widget.todoObject.uuid + "_title",
-                        child: Material(
-                          color: Colors.transparent,
-                          child: Text(
-                            widget.todoObject.title,
-                            style: TextStyle(fontSize: 30.0),
-                            softWrap: false,
-                          ),
+                    alignment: Alignment.bottomLeft,
+                    child: Hero(
+                      tag: widget.todoObject.uuid + "_title",
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Text(
+                          widget.todoObject.title,
+                          style: TextStyle(fontSize: 30.0),
+                          softWrap: false,
                         ),
-                      )),
+                      ),
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 30.0),
                   child: Align(
-                      alignment: Alignment.bottomLeft,
-                      child: Hero(
-                          tag: widget.todoObject.uuid + "_progress_bar",
-                          child: Material(
-                            color: Colors.transparent,
-                            child: Row(
-                              children: <Widget>[
-                                Expanded(
-                                  child: LinearProgressIndicator(
-                                    value: barPercent,
-                                    backgroundColor: Colors.grey.withAlpha(50),
-                                    valueColor: AlwaysStoppedAnimation<Color>(widget.todoObject.color),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 5.0),
-                                  child: Text((barPercent * 100).round().toString() + "%"),
-                                )
-                              ],
+                    alignment: Alignment.bottomLeft,
+                    child: Hero(
+                      tag: widget.todoObject.uuid + "_progress_bar",
+                      child: Material(
+                        color: Colors.transparent,
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: LinearProgressIndicator(
+                                value: barPercent,
+                                backgroundColor: Colors.grey.withAlpha(50),
+                                valueColor: AlwaysStoppedAnimation<Color>(widget.todoObject.color),
+                              ),
                             ),
-                          ))),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 5.0),
+                              child: Text((barPercent * 100).round().toString() + "%"),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
                 Expanded(
-                    child: ScaleTransition(
-                  scale: scaleAnimation,
-                  child: ListView.builder(
-                    padding: const EdgeInsets.all(0.0),
-                    itemBuilder: (BuildContext context, int index) {
-                      DateTime currentDate = widget.todoObject.tasks.keys.toList()[index];
-                      DateTime _now = DateTime.now();
-                      DateTime today = DateTime(_now.year, _now.month, _now.day);
-                      String dateString;
-                      if (currentDate.isBefore(today)) {
-                        dateString = "Previous - " + DateFormat.E().format(currentDate);
-                      } else if (currentDate.isAtSameMomentAs(today)) {
-                        dateString = "Today";
-                      } else if (currentDate.isAtSameMomentAs(today.add(const Duration(days: 1)))) {
-                        dateString = "Tomorrow";
-                      } else {
-                        dateString = DateFormat.E().format(currentDate);
-                      }
-                      List<Widget> tasks = [Text(dateString)];
-                      widget.todoObject.tasks[currentDate].forEach((task) {
-                        tasks.add(CustomCheckboxListTile(
-                          activeColor: widget.todoObject.color,
-                          value: task.isCompleted(),
-                          onChanged: (value) {
-                            setState(() {
-                              task.setComplete(value);
-                              updateBarPercent();
-                            });
-                          },
-                          title: Text(task.task),
-                          secondary: Icon(Icons.alarm),
-                        ));
-                      });
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: tasks,
-                      );
-                    },
-                    itemCount: widget.todoObject.tasks.length,
+                  child: Hero(
+                    tag: widget.todoObject.uuid + "_just_a_test",
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: FadeTransition(
+                        opacity: scaleAnimation,
+                        child: ScaleTransition(
+                          scale: scaleAnimation,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.all(0.0),
+                            itemBuilder: (BuildContext context, int index) {
+                              DateTime currentDate = widget.todoObject.tasks.keys.toList()[index];
+                              DateTime _now = DateTime.now();
+                              DateTime today = DateTime(_now.year, _now.month, _now.day);
+                              String dateString;
+                              if (currentDate.isBefore(today)) {
+                                dateString = "Previous - " + DateFormat.E().format(currentDate);
+                              } else if (currentDate.isAtSameMomentAs(today)) {
+                                dateString = "Today";
+                              } else if (currentDate.isAtSameMomentAs(today.add(const Duration(days: 1)))) {
+                                dateString = "Tomorrow";
+                              } else {
+                                dateString = DateFormat.E().format(currentDate);
+                              }
+                              List<Widget> tasks = [Text(dateString)];
+                              widget.todoObject.tasks[currentDate].forEach((task) {
+                                tasks.add(CustomCheckboxListTile(
+                                  activeColor: widget.todoObject.color,
+                                  value: task.isCompleted(),
+                                  onChanged: (value) {
+                                    setState(() {
+                                      task.setComplete(value);
+                                      updateBarPercent();
+                                    });
+                                  },
+                                  title: Text(task.task),
+                                  secondary: Icon(Icons.alarm),
+                                ));
+                              });
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: tasks,
+                              );
+                            },
+                            itemCount: widget.todoObject.tasks.length,
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ))
+                ),
               ],
             ),
           ),
