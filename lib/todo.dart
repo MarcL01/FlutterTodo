@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'main.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:math';
-import 'dart:collection';
 
 class TodoObject {
   TodoObject(String title, IconData icon) {

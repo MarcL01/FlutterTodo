@@ -80,14 +80,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    super.initState();
     colorTween = ColorTween(begin: todos[0].color, end: todos[0].color);
     backgroundColor = todos[0].color;
     backgroundGradient = todos[0].gradient;
     scrollController = ScrollController();
     scrollController.addListener(() {
       ScrollPosition position = scrollController.position;
-      ScrollDirection direction = position.userScrollDirection;
-      int page = (position.pixels / (position.maxScrollExtent / (todos.length.toDouble() - 1))).toInt();
+//      ScrollDirection direction = position.userScrollDirection;
+      int page = position.pixels ~/ (position.maxScrollExtent / (todos.length.toDouble() - 1));
       double pageDo = (position.pixels / (position.maxScrollExtent / (todos.length.toDouble() - 1)));
       double percent = pageDo - page;
       if (todos.length - 1 < page + 1) {
@@ -96,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
       colorTween.begin = todos[page].color;
       colorTween.end = todos[page + 1].color;
       setState(() {
-        backgroundColor = colorTween.lerp(percent);
+        backgroundColor = colorTween.transform(percent);
         backgroundGradient = todos[page].gradient.lerpTo(todos[page + 1].gradient, percent);
       });
     });
@@ -105,7 +106,6 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final double _width = MediaQuery.of(context).size.width;
-    final double _height = MediaQuery.of(context).size.height;
 
     return Container(
       decoration: BoxDecoration(gradient: backgroundGradient),
@@ -261,15 +261,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                                                                     color: Colors.grey,
                                                                   ),
                                                                   itemBuilder: (context) => <PopupMenuEntry<TodoCardSettings>>[
-                                                                        PopupMenuItem(
-                                                                          child: Text("Edit Color"),
-                                                                          value: TodoCardSettings.edit_color,
-                                                                        ),
-                                                                        PopupMenuItem(
-                                                                          child: Text("Delete"),
-                                                                          value: TodoCardSettings.delete,
-                                                                        ),
-                                                                      ],
+                                                                    PopupMenuItem(
+                                                                      child: Text("Edit Color"),
+                                                                      value: TodoCardSettings.edit_color,
+                                                                    ),
+                                                                    PopupMenuItem(
+                                                                      child: Text("Delete"),
+                                                                      value: TodoCardSettings.delete,
+                                                                    ),
+                                                                  ],
                                                                   onSelected: (setting) {
                                                                     switch (setting) {
                                                                       case TodoCardSettings.edit_color:
@@ -418,7 +418,7 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
     animationBar = AnimationController(vsync: this, duration: const Duration(milliseconds: 100))
       ..addListener(() {
         setState(() {
-          barPercent = animT.lerp(animationBar.value);
+          barPercent = animT.transform(animationBar.value);
         });
       });
     animT = Tween<double>(begin: percentComplete, end: percentComplete);
@@ -477,15 +477,15 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                       color: Colors.grey,
                     ),
                     itemBuilder: (context) => <PopupMenuEntry<TodoCardSettings>>[
-                          PopupMenuItem(
-                            child: Text("Edit Color"),
-                            value: TodoCardSettings.edit_color,
-                          ),
-                          PopupMenuItem(
-                            child: Text("Delete"),
-                            value: TodoCardSettings.delete,
-                          ),
-                        ],
+                      PopupMenuItem(
+                        child: Text("Edit Color"),
+                        value: TodoCardSettings.edit_color,
+                      ),
+                      PopupMenuItem(
+                        child: Text("Delete"),
+                        value: TodoCardSettings.delete,
+                      ),
+                    ],
                     onSelected: (setting) {
                       switch (setting) {
                         case TodoCardSettings.edit_color:
