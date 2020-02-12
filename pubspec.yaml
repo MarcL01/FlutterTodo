@@ -1,12 +1,12 @@
 name: todo
-description: A new Flutter project.
+description: Todo project based on https://dribbble.com/shots/3812962-iPhone-X-Todo-Concept
 
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^0.1.0
-  uuid: ^2.0.0
-  intl: ^0.15.7
+  cupertino_icons: ^0.1.3
+  uuid: ^2.0.4
+  intl: ^0.16.1
 dev_dependencies:
   flutter_test:
     sdk: flutter
