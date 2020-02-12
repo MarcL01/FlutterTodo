@@ -48,11 +48,11 @@ List<TodoObject> todos = [
       TaskObject("Icon Set Design for Mobile", DateTime(2018, 5, 3)),
       TaskObject("HTML/CSS Study", DateTime(2018, 5, 3)),
     ],
-    DateTime(2018, 5, 4): [
-      TaskObject("Meet Clients", DateTime(2018, 5, 4)),
-      TaskObject("Design Sprint", DateTime(2018, 5, 4)),
-      TaskObject("Icon Set Design for Mobile", DateTime(2018, 5, 4)),
-      TaskObject("HTML/CSS Study", DateTime(2018, 5, 4)),
+    DateTime(2019, 5, 4): [
+      TaskObject("Meet Clients", DateTime(2019, 5, 4)),
+      TaskObject("Design Sprint", DateTime(2019, 5, 4)),
+      TaskObject("Icon Set Design for Mobile", DateTime(2019, 5, 4)),
+      TaskObject("HTML/CSS Study", DateTime(2019, 5, 4)),
     ]
   }),
   TodoObject("Personal", Icons.person),
@@ -606,7 +606,9 @@ class _DetailPageState extends State<DetailPage> with TickerProviderStateMixin {
                               DateTime _now = DateTime.now();
                               DateTime today = DateTime(_now.year, _now.month, _now.day);
                               String dateString;
-                              if (currentDate.isBefore(today)) {
+                              if (currentDate.isBefore(today.subtract(Duration(days: 7)))) {
+                                dateString = DateFormat.yMMMMEEEEd().format(currentDate);
+                              } else if (currentDate.isBefore(today)) {
                                 dateString = "Previous - " + DateFormat.E().format(currentDate);
                               } else if (currentDate.isAtSameMomentAs(today)) {
                                 dateString = "Today";
