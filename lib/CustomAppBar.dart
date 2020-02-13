@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 const double _kLeadingWidth = kToolbarHeight;
-const Object _kDefaultHeroTag = const Object();
+const Object _kDefaultHeroTag = Object();
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   CustomAppBar({
@@ -31,7 +31,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
         assert(titleSpacing != null),
         assert(toolbarOpacity != null),
         assert(bottomOpacity != null),
-        preferredSize = new Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0)),
+        preferredSize = Size.fromHeight(kToolbarHeight + (bottom?.preferredSize?.height ?? 0.0)),
         super(key: key);
 
   final Object heroTag;
@@ -85,7 +85,7 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   }
 
   @override
-  _CustomAppBarState createState() => new _CustomAppBarState();
+  _CustomAppBarState createState() => _CustomAppBarState();
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
@@ -117,7 +117,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     SystemChrome.setSystemUIOverlayStyle(brightness == Brightness.dark ? SystemUiOverlayStyle.light : SystemUiOverlayStyle.dark);
 
     if (widget.toolbarOpacity != 1.0) {
-      final double opacity = const Interval(0.25, 1.0, curve: Curves.fastOutSlowIn).transform(widget.toolbarOpacity);
+      final double opacity = Interval(0.25, 1.0, curve: Curves.fastOutSlowIn).transform(widget.toolbarOpacity);
       if (centerStyle?.color != null) centerStyle = centerStyle.copyWith(color: centerStyle.color.withOpacity(opacity));
       if (sideStyle?.color != null) sideStyle = sideStyle.copyWith(color: sideStyle.color.withOpacity(opacity));
       appBarIconTheme = appBarIconTheme.copyWith(opacity: opacity * (appBarIconTheme.opacity ?? 1.0));
@@ -126,18 +126,18 @@ class _CustomAppBarState extends State<CustomAppBar> {
     Widget leading = widget.leading;
     if (leading == null && widget.automaticallyImplyLeading) {
       if (hasDrawer) {
-        leading = new IconButton(
-          icon: const Icon(Icons.menu),
+        leading = IconButton(
+          icon: Icon(Icons.menu),
           onPressed: _handleDrawerButton,
           tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
         );
       } else {
-        if (canPop) leading = useCloseButton ? const CloseButton() : const BackButton();
+        if (canPop) leading = useCloseButton ? CloseButton() : BackButton();
       }
     }
     if (leading != null) {
-      leading = new ConstrainedBox(
-        constraints: const BoxConstraints.tightFor(width: _kLeadingWidth),
+      leading = ConstrainedBox(
+        constraints: BoxConstraints.tightFor(width: _kLeadingWidth),
         child: leading,
       );
     }
@@ -147,13 +147,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
       switch (defaultTargetPlatform) {
         case TargetPlatform.android:
         case TargetPlatform.fuchsia:
-          title = new Semantics(namesRoute: true, child: title);
+          title = Semantics(namesRoute: true, child: title);
           break;
         case TargetPlatform.iOS:
           break;
       }
 
-      title = new DefaultTextStyle(
+      title = DefaultTextStyle(
         style: centerStyle,
         softWrap: false,
         overflow: TextOverflow.ellipsis,
@@ -163,22 +163,22 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
     Widget actions;
     if (widget.actions != null && widget.actions.isNotEmpty) {
-      actions = new Row(
+      actions = Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: widget.actions,
       );
     } else if (hasEndDrawer) {
-      actions = new IconButton(
-        icon: const Icon(Icons.menu),
+      actions = IconButton(
+        icon: Icon(Icons.menu),
         onPressed: _handleDrawerButtonEnd,
         tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
       );
     }
 
-    final Widget toolbar = new Padding(
-      padding: const EdgeInsetsDirectional.only(end: 4.0),
-      child: new NavigationToolbar(
+    final Widget toolbar = Padding(
+      padding: EdgeInsetsDirectional.only(end: 4.0),
+      child: NavigationToolbar(
         leading: leading,
         middle: title,
         trailing: actions,
@@ -187,12 +187,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
       ),
     );
 
-    Widget appBar = new ClipRect(
-      child: new CustomSingleChildLayout(
-        delegate: const _ToolbarContainerLayout(),
+    Widget appBar = ClipRect(
+      child: CustomSingleChildLayout(
+        delegate: _ToolbarContainerLayout(),
         child: IconTheme.merge(
           data: appBarIconTheme,
-          child: new DefaultTextStyle(
+          child: DefaultTextStyle(
             style: sideStyle,
             child: toolbar,
           ),
@@ -201,19 +201,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
     );
 
     if (widget.bottom != null) {
-      appBar = new Column(
+      appBar = Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          new Flexible(
-            child: new ConstrainedBox(
-              constraints: const BoxConstraints(maxHeight: kToolbarHeight),
+          Flexible(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(maxHeight: kToolbarHeight),
               child: appBar,
             ),
           ),
           widget.bottomOpacity == 1.0
               ? widget.bottom
-              : new Opacity(
-                  opacity: const Interval(0.25, 1.0, curve: Curves.fastOutSlowIn).transform(widget.bottomOpacity),
+              : Opacity(
+                  opacity: Interval(0.25, 1.0, curve: Curves.fastOutSlowIn).transform(widget.bottomOpacity),
                   child: widget.bottom,
                 ),
         ],
@@ -221,19 +221,19 @@ class _CustomAppBarState extends State<CustomAppBar> {
     }
 
     if (widget.primary) {
-      appBar = new SafeArea(
+      appBar = SafeArea(
         top: true,
         child: appBar,
       );
     }
 
-    appBar = new Align(
+    appBar = Align(
       alignment: Alignment.topCenter,
       child: appBar,
     );
 
     if (widget.flexibleSpace != null) {
-      appBar = new Stack(
+      appBar = Stack(
         fit: StackFit.passthrough,
         children: <Widget>[
           widget.flexibleSpace,
@@ -242,14 +242,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
       );
     }
 
-    Widget child = new Material(
+    Widget child = Material(
       color: widget.backgroundColor ?? themeData.primaryColor,
       elevation: widget.elevation,
       child: appBar,
     );
 
     if (widget.heroTag != null) {
-      return new Hero(
+      return Hero(
         tag: widget.heroTag,
         child: child,
       );
@@ -269,12 +269,12 @@ class _ToolbarContainerLayout extends SingleChildLayoutDelegate {
 
   @override
   Size getSize(BoxConstraints constraints) {
-    return new Size(constraints.maxWidth, kToolbarHeight);
+    return Size(constraints.maxWidth, kToolbarHeight);
   }
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
-    return new Offset(0.0, size.height - childSize.height);
+    return Offset(0.0, size.height - childSize.height);
   }
 
   @override

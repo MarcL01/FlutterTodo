@@ -7,11 +7,11 @@ class TodoObject {
   TodoObject(String title, IconData icon) {
     this.title = title;
     this.icon = icon;
-    ColorChoice choice = ColorChoices.choices[new Random().nextInt(ColorChoices.choices.length)];
+    ColorChoice choice = ColorChoices.choices[Random().nextInt(ColorChoices.choices.length)];
     this.color = choice.primary;
     this.gradient = LinearGradient(colors: choice.gradient, begin: Alignment.bottomCenter, end: Alignment.topCenter);
-    tasks = new Map<DateTime, List<TaskObject>>();
-    this.uuid = new Uuid().v1();
+    tasks = Map<DateTime, List<TaskObject>>();
+    this.uuid = Uuid().v1();
   }
 
   TodoObject.import(String uuidS, String title, int sortID, ColorChoice color, IconData icon, Map<DateTime, List<TaskObject>> tasks) {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 
 class CustomListTile extends StatelessWidget {
-
   const CustomListTile({
     Key key,
     this.leading,
@@ -15,11 +14,11 @@ class CustomListTile extends StatelessWidget {
     this.onTap,
     this.onLongPress,
     this.selected: false,
-  }) : assert(isThreeLine != null),
-       assert(enabled != null),
-       assert(selected != null),
-       assert(!isThreeLine || subtitle != null),
-       super(key: key);
+  })  : assert(isThreeLine != null),
+        assert(enabled != null),
+        assert(selected != null),
+        assert(!isThreeLine || subtitle != null),
+        super(key: key);
 
   final Widget leading;
 
@@ -41,41 +40,37 @@ class CustomListTile extends StatelessWidget {
 
   final bool selected;
 
-  static Iterable<Widget> divideTiles({ BuildContext context, @required Iterable<Widget> tiles, Color color }) sync* {
+  static Iterable<Widget> divideTiles({BuildContext context, @required Iterable<Widget> tiles, Color color}) sync* {
     assert(tiles != null);
     assert(color != null || context != null);
 
     final Iterator<Widget> iterator = tiles.iterator;
     final bool isNotEmpty = iterator.moveNext();
 
-    final Decoration decoration = new BoxDecoration(
-      border: new Border(
+    final Decoration decoration = BoxDecoration(
+      border: Border(
         bottom: Divider.createBorderSide(context, color: color),
       ),
     );
 
     Widget tile = iterator.current;
     while (iterator.moveNext()) {
-      yield new DecoratedBox(
+      yield DecoratedBox(
         position: DecorationPosition.foreground,
         decoration: decoration,
         child: tile,
       );
       tile = iterator.current;
     }
-    if (isNotEmpty)
-      yield tile;
+    if (isNotEmpty) yield tile;
   }
 
   Color _iconColor(ThemeData theme, ListTileTheme tileTheme) {
-    if (!enabled)
-      return theme.disabledColor;
+    if (!enabled) return theme.disabledColor;
 
-    if (selected && tileTheme?.selectedColor != null)
-      return tileTheme.selectedColor;
+    if (selected && tileTheme?.selectedColor != null) return tileTheme.selectedColor;
 
-    if (!selected && tileTheme?.iconColor != null)
-      return tileTheme.iconColor;
+    if (!selected && tileTheme?.iconColor != null) return tileTheme.iconColor;
 
     switch (theme.brightness) {
       case Brightness.light:
@@ -88,14 +83,11 @@ class CustomListTile extends StatelessWidget {
   }
 
   Color _textColor(ThemeData theme, ListTileTheme tileTheme, Color defaultColor) {
-    if (!enabled)
-      return theme.disabledColor;
+    if (!enabled) return theme.disabledColor;
 
-    if (selected && tileTheme?.selectedColor != null)
-      return tileTheme.selectedColor;
+    if (selected && tileTheme?.selectedColor != null) return tileTheme.selectedColor;
 
-    if (!selected && tileTheme?.textColor != null)
-      return tileTheme.textColor;
+    if (!selected && tileTheme?.textColor != null) return tileTheme.textColor;
 
     if (selected) {
       switch (theme.brightness) {
@@ -156,34 +148,24 @@ class CustomListTile extends StatelessWidget {
     final List<Widget> children = <Widget>[];
 
     IconThemeData iconThemeData;
-    if (leading != null || trailing != null)
-      iconThemeData = new IconThemeData(color: _iconColor(theme, tileTheme));
+    if (leading != null || trailing != null) iconThemeData = IconThemeData(color: _iconColor(theme, tileTheme));
 
     if (leading != null) {
       children.add(IconTheme.merge(
         data: iconThemeData,
-        child: new Container(
-          margin: const EdgeInsetsDirectional.only(end: 16.0),
-          width: 30.0,
-          alignment: AlignmentDirectional.centerStart,
-          child: leading
-        ),
+        child: Container(margin: EdgeInsetsDirectional.only(end: 16.0), width: 30.0, alignment: AlignmentDirectional.centerStart, child: leading),
       ));
     }
 
-    final Widget primaryLine = new AnimatedDefaultTextStyle(
-      style: _titleTextStyle(theme, tileTheme),
-      duration: kThemeChangeDuration,
-      child: title ?? new Container()
-    );
+    final Widget primaryLine = AnimatedDefaultTextStyle(style: _titleTextStyle(theme, tileTheme), duration: kThemeChangeDuration, child: title ?? Container());
     Widget center = primaryLine;
     if (subtitle != null && (isTwoLine || isThreeLine)) {
-      center = new Column(
+      center = Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           primaryLine,
-          new AnimatedDefaultTextStyle(
+          AnimatedDefaultTextStyle(
             style: _subtitleTextStyle(theme, tileTheme),
             duration: kThemeChangeDuration,
             child: subtitle,
@@ -191,51 +173,48 @@ class CustomListTile extends StatelessWidget {
         ],
       );
     }
-    children.add(new Expanded(
+    children.add(Expanded(
       child: center,
     ));
 
     if (trailing != null) {
       children.add(IconTheme.merge(
         data: iconThemeData,
-        child: new Container(
-          margin: const EdgeInsetsDirectional.only(start: 16.0),
+        child: Container(
+          margin: EdgeInsetsDirectional.only(start: 16.0),
           alignment: AlignmentDirectional.centerEnd,
           child: trailing,
         ),
       ));
     }
 
-    return new InkWell(
+    return InkWell(
       highlightColor: Colors.grey.withAlpha(10),
       splashColor: Colors.transparent,
       onTap: enabled ? onTap : null,
       onLongPress: enabled ? onLongPress : null,
-      child: new Semantics(
+      child: Semantics(
         selected: selected,
         enabled: enabled,
-        child: new ConstrainedBox(
-          constraints: new BoxConstraints(minHeight: tileHeight),
-          child: new Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 0.0),
-            child: new UnconstrainedBox(
-              constrainedAxis: Axis.horizontal,
-              child: new SafeArea(
-                top: false,
-                bottom: false,
-                child: new Row(children: children),
+        child: ConstrainedBox(
+            constraints: BoxConstraints(minHeight: tileHeight),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 0.0),
+              child: UnconstrainedBox(
+                constrainedAxis: Axis.horizontal,
+                child: SafeArea(
+                  top: false,
+                  bottom: false,
+                  child: Row(children: children),
+                ),
               ),
-            ),
-          )
-        ),
+            )),
       ),
     );
   }
 }
 
-
 class CustomCheckboxListTile extends StatelessWidget {
-
   const CustomCheckboxListTile({
     Key key,
     @required this.value,
@@ -247,11 +226,11 @@ class CustomCheckboxListTile extends StatelessWidget {
     this.dense,
     this.secondary,
     this.selected: false,
-  }) : assert(value != null),
-       assert(isThreeLine != null),
-       assert(!isThreeLine || subtitle != null),
-       assert(selected != null),
-       super(key: key);
+  })  : assert(value != null),
+        assert(isThreeLine != null),
+        assert(!isThreeLine || subtitle != null),
+        assert(selected != null),
+        super(key: key);
 
   final bool value;
 
@@ -273,19 +252,19 @@ class CustomCheckboxListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Widget leading = new Container(
+    final Widget leading = Container(
       width: 18.0,
-      child: new Checkbox(
+      child: Checkbox(
         value: value,
         onChanged: onChanged,
         activeColor: activeColor,
       ),
     );
     Widget trailing = secondary;
-    return new MergeSemantics(
+    return MergeSemantics(
       child: ListTileTheme.merge(
         selectedColor: activeColor ?? Theme.of(context).accentColor,
-        child: new CustomListTile(
+        child: CustomListTile(
           leading: leading,
           title: title,
           subtitle: subtitle,
@@ -293,7 +272,11 @@ class CustomCheckboxListTile extends StatelessWidget {
           isThreeLine: isThreeLine,
           dense: dense,
           enabled: onChanged != null,
-          onTap: onChanged != null ? () { onChanged(!value); } : null,
+          onTap: onChanged != null
+              ? () {
+                  onChanged(!value);
+                }
+              : null,
           selected: selected,
         ),
       ),
