@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../main.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:math';
 import 'package:todo/objects/ColorChoice.dart';
