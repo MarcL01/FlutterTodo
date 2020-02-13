@@ -117,6 +117,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
           backgroundColor: Colors.transparent,
           elevation: 0.0,
           title: Text("TODO"),
+          centerTitle: true,
           leading: IconButton(
             icon: Icon(CustomIcons.menu),
             onPressed: () {},
