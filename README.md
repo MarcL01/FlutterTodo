@@ -11,11 +11,13 @@ In the command terminal, run the following commands:
     $ flutter packages get
     $ flutter run
 
-## 📷 Screenshots (More Coming Soon)
-![example gif](https://github.com/littlemarc2011/FlutterTodo/raw/master/example.gif)
+## 📷 Screenshots
+![Mockup 1](https://github.com/BigMarco254/FlutterTodo/raw/master/mockups/mockup-1.jpeg)
+![Mockup 2](https://github.com/BigMarco254/FlutterTodo/raw/master/mockups/mockup-2.jpeg)
+![Mockup 3](https://github.com/BigMarco254/FlutterTodo/raw/master/mockups/mockup-3.jpeg)
 
 ## 🤔Issues:
  * Hero transitions are on top of appbar and other widgets
 
 ## 📚 Resources
-[Mockups](https://www.ls.graphics/free/minimalistic-smartphones-mockups)
+[Mockups](https://shotsnapp.com)
